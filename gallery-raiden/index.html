@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Shiraori Joki - Gallery Page</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+      }
+
+      .navbar {
+        padding: 0.5rem 1rem; /* Mengurangi padding navbar */
+      }
+
+      .navbar-brand {
+        font-size: 1.3rem; /* Mengurangi ukuran font pada navbar brand */
+        font-weight: bold;
+      }
+
+      .navbar-nav .nav-link {
+        font-size: 0.95rem; /* Mengurangi ukuran font link navbar */
+        padding: 0.5rem 1rem; /* Menyesuaikan padding */
+      }
+
+      .navbar-toggler {
+        padding: 0.25rem; /* Mengurangi ukuran tombol navbar toggler */
+      }
+
+      /* Carousel */
+      .carousel-inner {
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .carousel-item img {
+        object-fit: cover;
+        height: 620px;
+        transition: transform 1s ease;
+      }
+
+      .carousel-item img:hover {
+        transform: scale(1.05);
+      }
+
+      /* Image grid */
+      .gallery-images img {
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .gallery-images img:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Styling for the grid container */
+      .gallery-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        margin-top: 30px;
+      }
+
+      /* Style for captions in the carousel */
+      .carousel-caption {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .carousel-caption h5 {
+        font-size: 1.8rem;
+      }
+
+      /* Padding for the main container */
+      .container-fluid {
+        padding: 50px 0;
+      }
+
+      /* Adjust image grid on mobile */
+      @media (max-width: 767px) {
+        .carousel-item img {
+          height: 400px;
+        }
+
+        .carousel-caption h5 {
+          font-size: 1.5rem;
+        }
+
+        .gallery-images img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container-fluid text-light">
+        <a class="navbar-brand" href="index.html">Shiraori</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="../index.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../list-paket/index.html">List Paket</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Others
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="/contact/index.html"
+                    >Contact</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item active"
+                    href="/gallery-raiden/index.html"
+                    >Gallery</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-light" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Carousel Section -->
+    <div
+      id="carouselExampleIndicators"
+      class="carousel slide"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img
+            src="../assets/99849262_p0.jpg"
+            class="d-block w-100"
+            alt="image Raidenshogun"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Raiden Shogun</h5>
+            <p>My Waifu C6 Archon Inazuma</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+            src="../assets/92742226_p0.jpg"
+            class="d-block w-100"
+            alt="image Yaemiko"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>My Ladies</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+            src="../assets/101838534_p0.jpg"
+            class="d-block w-100"
+            alt="image Xiao"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Xiao</h5>
+            <p>Some representative placeholder content for the third slide.</p>
+          </div>
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <!-- Carousel Section End -->
+
+    <!-- Gallery Images Section -->
+    <div class="container-fluid">
+      <div class="gallery-images">
+        <img
+          src="../assets/105731217_p3.png"
+          class="img-fluid"
+          alt="Gallery Image"
+        />
+        <img
+          src="../assets/105731217_p2.png"
+          class="img-fluid"
+          alt="Gallery Image"
+        />
+        <img
+          src="../assets/105731217_p0.png"
+          class="img-fluid"
+          alt="Gallery Image"
+        />
+        <img
+          src="../assets/102516718_p0.jpg"
+          class="img-fluid"
+          alt="Gallery Image"
+        />
+        <img
+          src="../assets/101113174_p0.jpg"
+          class="img-fluid"
+          alt="Gallery Image"
+        />
+        <img
+          src="../assets/100928758_p0.jpg"
+          class="img-fluid"
+          alt="Gallery Image"
+        />
+        <img
+          src="../assets/100737960_p0.jpg"
+          class="img-fluid"
+          alt="Gallery Image"
+        />
+      </div>
+    </div>
+    <!-- Gallery Images Section End -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

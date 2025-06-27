@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shiraori Joki - Homepage</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .carousel-item img {
+        height: 300px;
+        object-fit: cover;
+      }
+      .card .badge {
+        font-size: 0.8rem;
+      }
+      .card-body {
+        color: #343a40; /* Warna teks untuk deskripsi dan tombol */
+      }
+      .testimonial-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        color: #343a40; /* Ganti dengan warna teks yang lebih gelap agar mudah dibaca */
+      }
+
+      .testimonial-card p {
+        font-style: italic;
+      }
+
+      .testimonial-card small {
+        display: block;
+        margin-top: 10px;
+        color: #6c757d;
+      }
+
+      body {
+        color: #f8f9fa; /* Set warna teks utama menjadi terang */
+      }
+
+      .navbar,
+      .carousel-caption,
+      .card-title {
+        color: #f8f9fa; /* Pastikan teks di navbar, caption, dan judul kartu terlihat terang */
+      }
+    </style>
+  </head>
+  <body class="bg-dark text-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Shiraori</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./list-paket/index.html">List Paket</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                data-bs-toggle="dropdown"
+                >Others</a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="./contact/index.html"
+                    >Contact</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="./gallery-raiden/index.html"
+                    >Gallery</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+            />
+            <button class="btn btn-outline-light" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Carousel -->
+    <div
+      id="carouselExampleCaptions"
+      class="carousel slide"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="0"
+          class="active"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="2"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img
+            src="assets/IMG_20221110_202024.jpg"
+            class="d-block w-100"
+            alt="Raiden Shogun"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Raiden Shogun</h5>
+            <p>My Waifu C6 Archon Inazuma</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img
+            src="assets/96329307_p0.jpg"
+            class="d-block w-100"
+            alt="Yaemiko"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Yaemiko My Ladies</h5>
+            <p>Placeholder content for second slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="assets/95527533_p0.jpg" class="d-block w-100" alt="Xiao" />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Xiao</h5>
+            <p>Placeholder content for third slide.</p>
+          </div>
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+
+    <!-- Welcome Section -->
+    <div class="container text-center my-5">
+      <img
+        src="assets/105731217_p0.png"
+        alt="Profile"
+        class="img-fluid rounded-circle shadow mb-3"
+        width="150"
+        height="150"
+      />
+      <h2>🛠️ Shiraori Playlist Service 🛠️</h2>
+      <p>Welcome to My Service</p>
+      <p>
+        <em
+          >Testimoni sudah lebih dari
+          <span class="text-warning">100+</span> akun Genshin</em
+        >
+      </p>
+    </div>
+
+    <!-- Testimonial Section -->
+    <div class="container text-center my-5">
+      <h3 class="mb-4">Testimoni dari Customer</h3>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <p>
+              "Layanan yang luar biasa! Akun saya diurus dengan sangat baik, dan
+              saya mendapatkan semua yang saya inginkan dalam waktu singkat.
+              Highly recommended!"
+            </p>
+            <small>- Sarah, Akun Level 40+</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <p>
+              "Sangat puas dengan hasilnya! Saya tidak perlu lagi repot grinding
+              resin dan event. Shiraori Joki memberikan layanan yang cepat dan
+              terpercaya."
+            </p>
+            <small>- Andi, Akun Level 50+</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <p>
+              "Berkat Shiraori Joki, saya bisa menikmati setiap event Genshin
+              tanpa harus mengorbankan waktu. Layanan yang sangat membantu!"
+            </p>
+            <small>- Rina, Akun Level 30+</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paket Cards -->
+    <div class="container mb-5">
+      <div class="row g-4">
+        <!-- Card Template -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 text-dark shadow">
+            <div class="card-body">
+              <h5
+                class="card-title d-flex justify-content-between align-items-center"
+                style="color: #000000"
+              >
+                Paket Daily 1
+                <span class="badge bg-danger">New</span>
+              </h5>
+              <p class="card-text">Daily Resin Only.</p>
+              <a href="./list-paket/index.html" class="btn btn-dark w-100"
+                >Order Sekarang</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 text-dark shadow">
+            <div class="card-body">
+              <h5
+                class="card-title d-flex justify-content-between align-items-center"
+                style="color: #000000"
+              >
+                Paket Daily 2
+                <span class="badge bg-danger">New</span>
+              </h5>
+              <p class="card-text">Daily, Resin, Event.</p>
+              <a href="./list-paket/index.html" class="btn btn-dark w-100"
+                >Order Sekarang</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 text-dark shadow">
+            <div class="card-body">
+              <h5
+                class="card-title d-flex justify-content-between align-items-center"
+                style="color: #000000"
+              >
+                Paket Daily 3
+                <span class="badge bg-danger">New</span>
+              </h5>
+              <p class="card-text">Daily, Resin, Event, BP/Bounty.</p>
+              <a href="./list-paket/index.html" class="btn btn-dark w-100"
+                >Order Sekarang</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 text-dark shadow">
+            <div class="card-body">
+              <h5
+                class="card-title d-flex justify-content-between align-items-center"
+                style="color: #000000"
+              >
+                Paket Special
+                <span class="badge bg-danger">New</span>
+              </h5>
+              <p class="card-text">
+                Daily, Resin, Event, BP/Bounty, Build Character, Eksplorasi.
+              </p>
+              <a href="./list-paket/index.html" class="btn btn-dark w-100"
+                >Hubungi Sekarang</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
