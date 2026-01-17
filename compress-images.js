@@ -10,34 +10,44 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
-async function compressImage(inputPath, outputPath, filename) {
+async function processImage(inputPath, outputPath, filename) {
   try {
-    const ext = path.extname(filename).toLowerCase();
-    let pipeline = sharp(inputPath);
-    
-    // Resize jika terlalu besar (max 1200px width)
     const metadata = await sharp(inputPath).metadata();
-    if (metadata.width > 1200) {
-      pipeline = pipeline.resize(1200, null, { withoutEnlargement: true });
-    }
     
-    // Compress berdasarkan format
-    if (ext === '.jpg' || ext === '.jpeg') {
-      await pipeline.jpeg({ quality: 75, mozjpeg: true }).toFile(outputPath);
-    } else if (ext === '.png') {
-      await pipeline.png({ quality: 75, compressionLevel: 9 }).toFile(outputPath);
-    } else if (ext === '.webp') {
-      await pipeline.webp({ quality: 75 }).toFile(outputPath);
+    // Jika gambar lebih besar dari 1920px, resize saja (tanpa ubah kualitas)
+    if (metadata.width > 1920) {
+      const ext = path.extname(filename).toLowerCase();
+      
+      if (ext === '.jpg' || ext === '.jpeg') {
+        await sharp(inputPath)
+          .resize(1920, null, { withoutEnlargement: true })
+          .jpeg({ quality: 100 })
+          .toFile(outputPath);
+      } else if (ext === '.png') {
+        await sharp(inputPath)
+          .resize(1920, null, { withoutEnlargement: true })
+          .png({ compressionLevel: 9 })
+          .toFile(outputPath);
+      } else if (ext === '.webp') {
+        await sharp(inputPath)
+          .resize(1920, null, { withoutEnlargement: true })
+          .webp({ quality: 100, lossless: true })
+          .toFile(outputPath);
+      } else {
+        // Format lain, copy langsung
+        fs.copyFileSync(inputPath, outputPath);
+      }
+      return 'resized';
     } else {
-      // Convert lainnya ke jpg
-      const newOutput = outputPath.replace(ext, '.jpg');
-      await pipeline.jpeg({ quality: 75, mozjpeg: true }).toFile(newOutput);
-      return path.basename(newOutput);
+      // Gambar sudah kecil, copy langsung tanpa proses (kualitas 100% sama)
+      fs.copyFileSync(inputPath, outputPath);
+      return 'copied';
     }
-    return filename;
   } catch (err) {
     console.error(`Error: ${filename} - ${err.message}`);
-    return null;
+    // Jika error, copy file asli
+    fs.copyFileSync(inputPath, outputPath);
+    return 'copied';
   }
 }
 
@@ -45,31 +55,35 @@ async function main() {
   const files = fs.readdirSync(inputDir);
   const imageFiles = files.filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f));
   
-  console.log(`Found ${imageFiles.length} images to compress...`);
+  console.log(`Found ${imageFiles.length} images to process...`);
   
-  let processed = 0;
+  let resized = 0;
+  let copied = 0;
   let totalSaved = 0;
   
-  for (const file of imageFiles) {
+  for (let i = 0; i < imageFiles.length; i++) {
+    const file = imageFiles[i];
     const inputPath = path.join(inputDir, file);
     const outputPath = path.join(outputDir, file);
     
     const originalSize = fs.statSync(inputPath).size;
-    const result = await compressImage(inputPath, outputPath, file);
+    const result = await processImage(inputPath, outputPath, file);
+    const newSize = fs.statSync(outputPath).size;
     
-    if (result) {
-      const newSize = fs.statSync(path.join(outputDir, result)).size;
+    if (result === 'resized') {
+      resized++;
       const saved = originalSize - newSize;
       totalSaved += saved;
-      processed++;
-      
-      const percent = ((saved / originalSize) * 100).toFixed(1);
-      console.log(`[${processed}/${imageFiles.length}] ${file}: ${(originalSize/1024).toFixed(0)}KB -> ${(newSize/1024).toFixed(0)}KB (-${percent}%)`);
+      console.log(`[${i+1}/${imageFiles.length}] ${file}: RESIZED ${(originalSize/1024).toFixed(0)}KB -> ${(newSize/1024).toFixed(0)}KB`);
+    } else {
+      copied++;
+      console.log(`[${i+1}/${imageFiles.length}] ${file}: COPIED (${(originalSize/1024).toFixed(0)}KB)`);
     }
   }
   
-  console.log(`\nDone! Compressed ${processed} images.`);
-  console.log(`Total saved: ${(totalSaved / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`\nDone!`);
+  console.log(`- Resized: ${resized} images (saved ${(totalSaved / 1024 / 1024).toFixed(2)} MB)`);
+  console.log(`- Copied: ${copied} images (100% original quality)`);
 }
 
 main();
