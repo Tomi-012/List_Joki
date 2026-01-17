@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Galeri Karakter Genshin Impact, Honkai Star Rail dan Anime - Shiraori Joki Service" />
+  <meta name="keywords" content="galeri genshin impact, honkai star rail, wallpaper anime, karakter genshin" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" type="image/webp" href="../assets/favicon.webp" />
+  <title>Shiraori Joki - Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    .gallery-grid { columns: 3 300px; column-gap: 20px; }
+    .gallery-item {
+      margin-bottom: 20px; break-inside: avoid; border-radius: 15px; overflow: hidden;
+      position: relative; cursor: pointer; transition: transform 0.3s ease;
+      background: linear-gradient(90deg, #1a1a2e 25%, #2a2a4e 50%, #1a1a2e 75%);
+      background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; min-height: 200px;
+    }
+    .gallery-item.loaded { background: none; animation: none; min-height: auto; }
+    @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .gallery-item img { width: 100%; display: block; border-radius: 15px; opacity: 0; transition: opacity 0.3s ease; }
+    .gallery-item.loaded img { opacity: 1; }
+    .gallery-item:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+    .gallery-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent); opacity: 0;
+      transition: opacity 0.3s ease; pointer-events: none; }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .hero-slideshow { position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-size: cover; background-position: center; transition: opacity 1.5s ease-in-out; z-index: -1; }
+    .hero-slideshow::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.8)); }
+    .hero-slideshow-next { opacity: 0; z-index: -2; }
+    .hero-slideshow.fade-out { opacity: 0; }
+    .hero-slideshow-next.fade-in { opacity: 1; z-index: -1; }
+    .gallery-filter { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .filter-btn { padding: 10px 25px; border: 2px solid #7b2cbf; background: transparent;
+      color: white; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; font-weight: 500; }
+    .filter-btn:hover, .filter-btn.active { background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%); border-color: #9d4edd; }
+    .gallery-item.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a class="navbar-brand" href="../index.html">Shiraori <span style="color: var(--secondary-color)">.</span></a>
+      <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+      <ul class="nav-links">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="../index.html#services" class="nav-link">Services</a></li>
+        <li><a href="../index.html#testimonials" class="nav-link">Testimonials</a></li>
+        <li><a href="../list-paket/index.html" class="nav-link">Price List</a></li>
+        <li><a href="index.html" class="nav-link" style="color: var(--secondary-color);">Gallery</a></li>
+        <li><a href="../contact/index.html" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero" style="min-height: 60vh;">
+    <div class="hero-bg hero-slideshow" id="heroSlideshow"></div>
+    <div class="hero-bg hero-slideshow hero-slideshow-next" id="heroSlideshowNext"></div>
+    <div class="container hero-content">
+      <h1>Character <span class="highlight">Gallery</span></h1>
+      <p>Koleksi gambar karakter terbaik.</p>
+    </div>
+  </section>
+
+  <section class="packages-section">
+    <div class="container">
+      <div class="gallery-filter" style="text-align: center; margin-bottom: 30px;">
+        <button class="filter-btn active" data-filter="all">Semua</button>
+        <button class="filter-btn" data-filter="genshin">Genshin Impact</button>
+        <button class="filter-btn" data-filter="hsr">Honkai Star Rail</button>
+        <button class="filter-btn" data-filter="anime">Anime</button>
+        <button class="filter-btn" data-filter="other">Lainnya</button>
+      </div>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <h3 style="color: white; margin-bottom: 20px;">Shiraori Joki</h3>
+      <div class="social-links mb-4">
+        <a href="https://www.instagram.com/_ilham_bustomi_/?hl=id" target="_blank" style="color: white; margin: 0 10px;"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="https://wa.me/6285123607725" target="_blank" style="color: white; margin: 0 10px;"><i class="fab fa-whatsapp fa-lg"></i></a>
+        <a href="https://discord.com/users/shiraori2045" target="_blank" style="color: white; margin: 0 10px;"><i class="fab fa-discord fa-lg"></i></a>
+      </div>
+      <p class="footer-text">&copy; 2024 Shiraori Joki. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div id="imageLightbox">
+    <span id="lightboxClose">&times;</span>
+    <button id="lightboxPrev" class="lightbox-nav">&#10094;</button>
+    <img id="lightboxImage" src="" alt="Preview">
+    <button id="lightboxNext" class="lightbox-nav">&#10095;</button>
+    <div id="lightboxCounter"></div>
+  </div>
+  <style>
+    #imageLightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.95); z-index: 99999; justify-content: center; align-items: center; }
+    .lightbox-nav { position: fixed; top: 50%; transform: translateY(-50%);
+      background: rgba(123, 44, 191, 0.7); color: white; border: none; padding: 20px 15px;
+      font-size: 24px; cursor: pointer; z-index: 100000; border-radius: 5px; transition: background 0.3s; }
+    .lightbox-nav:hover { background: rgba(157, 78, 221, 0.9); }
+    #lightboxPrev { left: 20px; }
+    #lightboxNext { right: 20px; }
+    #lightboxCounter { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: white; background: rgba(0,0,0,0.5); padding: 8px 20px; border-radius: 20px; font-size: 14px; }
+    #lightboxImage { max-width: 95%; max-height: 95vh; object-fit: contain; border-radius: 10px;
+      box-shadow: 0 0 30px rgba(123, 44, 191, 0.5); cursor: default; }
+    #lightboxClose { position: fixed; top: 15px; right: 25px; font-size: 50px; color: white;
+      cursor: pointer; z-index: 100000; font-weight: bold; line-height: 1; }
+    #lightboxClose:hover { color: #ffd700; }
+  </style>
+
+  <script>
+    let currentImageIndex = 0;
+    let visibleImages = [];
+    
+    function openLightbox(imgSrc, index) {
+      currentImageIndex = index;
+      document.getElementById('lightboxImage').src = imgSrc;
+      document.getElementById('imageLightbox').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      updateCounter();
+    }
+    
+    function closeLightbox() {
+      document.getElementById('imageLightbox').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+    
+    function showPrev() {
+      currentImageIndex = (currentImageIndex - 1 + visibleImages.length) % visibleImages.length;
+      document.getElementById('lightboxImage').src = visibleImages[currentImageIndex];
+      updateCounter();
+    }
+    
+    function showNext() {
+      currentImageIndex = (currentImageIndex + 1) % visibleImages.length;
+      document.getElementById('lightboxImage').src = visibleImages[currentImageIndex];
+      updateCounter();
+    }
+    
+    function updateCounter() {
+      document.getElementById('lightboxCounter').textContent = (currentImageIndex + 1) + ' / ' + visibleImages.length;
+    }
+    
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', function(e) { e.stopPropagation(); showPrev(); });
+    document.getElementById('lightboxNext').addEventListener('click', function(e) { e.stopPropagation(); showNext(); });
+    document.getElementById('imageLightbox').addEventListener('click', function(e) {
+      if (e.target.id === 'imageLightbox') closeLightbox();
+    });
+    
+    document.addEventListener('keydown', function(e) {
+      if (document.getElementById('imageLightbox').style.display === 'flex') {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
+      }
+    });
+  </script>
+  <script src="../assets/js/script.js"></script>
+  <script>
+    // Semua gambar
+    const allImages = [
+      "100018857_p0.jpg", "100050901_p0.jpg", "100065424_p0.jpg", "100076089_p0.jpg", "100089490_p0.jpg",
+      "100261980_p0.png", "100263817_p0.jpg", "100315042_p0.jpg", "100316213_p0.png", "100464008_p0.jpg",
+      "100516816_p0.png", "100519908_p0.jpg", "100540913_p0.jpg", "100614475_p4.png", "100614475_p5.png",
+      "100614475_p6.png", "100737960_p0.jpg", "100823727_p0.jpg", "100928758_p0.jpg", "101023475_p0.jpg",
+      "101094689_p0.png", "101113174_p0.jpg", "101113404_p0.jpg", "101134241_p0.jpg", "101177800_p0.jpg",
+      "101213678_p0.jpg", "101312912_p0.jpg", "101351450_p0.jpg", "101553418_p0.jpg", "101733281_p0.jpg",
+      "101838534_p0.jpg", "102097803_p0.jpg", "102333431_p0.png", "102516718_p0.jpg", "102739215_p0.jpg",
+      "102932432_p0.jpg", "103015399_p0.png", "103181419_p0.jpg", "103399484_p0.jpg", "103745050_p0.jpg",
+      "103745050_p1.jpg", "103745050_p3.jpg", "103768786_p0.jpg", "103791396_p0.jpg", "103816465_p0.jpg",
+      "103920647_p0.jpg", "104147976_p0.jpg", "104270153_p0.jpg", "104494185_p0.jpg", "104627190_p0.jpg",
+      "104627190_p1.jpg", "104627190_p3.jpg", "104735944_p0.jpg", "104761709_p0.jpg", "104976709_p0.jpg",
+      "105178129_p0.jpg", "105264288_p1.png", "105337637_p0.png", "105578782_p0.png", "105592451_p0.jpg",
+      "105731217_p0.png", "105731217_p2.png", "105731217_p3.png", "106067275_p0.jpg", "106307440_p0.jpg",
+      "1064544.jpg", "106565825_p0.png", "107121111_p0.jpg", "107135990_p0.png", "107135990_p1.png",
+      "107136042_p0.png", "107136042_p1.png", "107140438_p0.png", "107140438_p1.png", "107149204_p0.jpg",
+      "107149204_p2.jpg", "107149566_p0.png", "107149566_p1.png", "107149566_p2.png", "107168262_p0.png",
+      "107168262_p1.png", "107168262_p3.png", "107168262_p5.png", "107168277_p0.png", "107168277_p1.png",
+      "107392858_p0.jpg", "108161957_p0.jpg", "108408068_p0.png", "108495969_p0.jpg", "108640782_p0.jpg",
+      "108860399_p0.png", "108902728_p0.jpg", "109129788_p0.png", "109313854_p0.jpg", "109834735_p3.jpg",
+      "109834735_p4.jpg", "1102108.jpg", "110334733_p0.jpg", "110712986_p0.jpg", "1109233.jpg",
+      "110954429_p0.jpg", "1112566.jpg", "111649981_p0.png", "111945697_p0.jpg", "111976984_p3.jpg",
+      "111976984_p5.jpg", "112026290_p0.jpg", "112097548_p0.jpg", "112124022_p0.jpg", "112166004_p0.jpg",
+      "112185838_p0.jpg", "112198860_p0.png", "112205397_p0.png", "112388380_p0.jpg", "112523852_p0.jpg",
+      "112610962_p0.jpg", "1126757.jpg", "112721031_p0.png", "112824278_p0.jpg", "112917224_p0.jpg",
+      "112948189_p0.jpg", "112992279_p0.jpg", "113058373_p0.jpg", "113146854_p0.png", "113146854_p1.png",
+      "113146854_p2.png", "113192079_p0.jpg", "113505462_p0.jpg", "113538156_p0.jpg", "113626601_p0.jpg",
+      "113713211_p0.png", "113713211_p1.png", "113795397_p0.png", "113821322_p0.png", "113872082_p0.jpg",
+      "113952771_p0.jpg", "113961710_p0.png", "113961710_p1.png", "113961710_p2.png", "113961710_p3.png",
+      "114012590_p2.png", "114038312_p0.png", "114102712_p0.jpg", "114257104_p0.jpg", "114308836_p0.png",
+      "114437030_p0.jpg", "114629449_p0.jpg", "114691199_p0.jpg", "114766733_p0.jpg", "114902719_p0.jpg",
+      "114967774_p0.jpg", "115037606_p0.jpg", "115078353_p0.jpg", "115107180_p0.png", "115245263_p0.jpg",
+      "115271497_p0.jpg", "115282718_p0.jpg", "115360461_p0.jpg", "115360478_p0.jpg", "115418242_p0.jpg",
+      "115497349_p0.jpg", "115497373_p0.jpg", "115537354_p0.jpg", "115558286_p0.jpg", "115589701_p0.jpg",
+      "115641695_p0.jpg", "115641850_p0.jpg", "115826259_p0.jpg", "115940342_p0.jpg", "115990620_p0.jpg",
+      "116096166_p0.jpg", "116149292_p0.jpg", "116675440_p0.jpg", "116708185_p011.jpg", "116777415_p0.png",
+      "116777415_p1.png", "116810101_p0.jpg", "117103109_p0.jpg", "117180967_p0.jpg", "117187200_p0.jpg",
+      "117365386_p0.jpg", "117483637_p0.jpg", "117568330_p0.jpg", "117568424_p0.jpg", "117630781_p0.jpg",
+      "117662672_p0.jpg", "117864472_p0.jpg", "117981614_p0.jpg", "118065318_p0.jpg", "118092967_p0.jpg",
+      "118220548_p0.png", "118280612_p0.jpg", "118280697_p0.png", "118280697_p1.png", "118473157_p0.png",
+      "118614803_p0.png", "118614803_p1.png", "118615551_p0.png", "118643992_p0.jpg", "118880286_p0.jpg",
+      "119258991_p0.png", "119297753_p0.png", "119297753_p1.png", "119384197_p0.jpg", "119501441_p0.jpg",
+      "119671898_p0.jpg", "119915880_p0.jpg", "120060975_p0.jpg", "120301131_p0.jpg", "120472631_p0.jpg",
+      "120784216_p0.jpg", "123232205_p0.png", "123232205_p3.png", "123232205_p5.png", "123267139_p0.png",
+      "123267139_p1.png", "123267139_p6.png", "123267139_p7.png", "123326004_p0.jpg", "123355954_p0.jpg",
+      "123385360_p0.jpg", "123429500_p0.png", "123429500_p1.png", "123437096_p2.png", "123503605_p3.png",
+      "123503605_p4.png", "123684343_p0.png", "123684343_p2.png", "124600712_p0.png", "124960126_p0.png",
+      "125070092_p0.png", "126099020_p0.png", "126099020_p1.png", "126259438_p0.png", "126259438_p1.png",
+      "126326125_p0.png", "126448474_p1.png", "126734095_p0.png", "127004347_p0.png", "127042315_p0.png",
+      "127042315_p1.png", "127042315_p2.png", "127769963_p0.png", "127769963_p1.png", "127769963_p2.png",
+      "127842565_p1.png", "1297089.png", "130921899_p0.png", "130921899_p1.png", "130921899_p2.png",
+      "130921899_p3.png", "132277384_p0.png", "132277384_p1.png", "132277384_p2.png", "1665338279278.png",
+      "1713509354011.png", "20240425_214328.jpg", "20240525_133545.jpg", "20240525_134749.jpg",
+      "255ef81140026f169ecef1e8e939172b_high.webp", "26727278314640bfacccb899858d482c.jpg",
+      "27b13a0b09de65849f10597d762e2938.jpg", "27d67fa6b7d5a4ea2f2d8f17fbf7d23d.jpg",
+      "31de877ad637b9d9345de22a960689fc.jpg", "39e5bf2f233023c14095430633caa526_high.webp",
+      "3d9f728961edd2e51e4da4c06eea6291.jpg", "3deab4f9937f9bcfbe511cfee4fd5bfa.jpg",
+      "4k HD Wallpaper_ Raiden Shogun Resting at Modern Hotel.jpeg",
+      "50a1d3bce1ca05ba8d939b984ae144e1.jpg", "5c80c52a22081589d2937a7ed1442af0.jpg",
+      "5e486026-6830-41f5-aa44-6ea965b5b1da_base_resized.jpg", "6c3985f8-c815-48fc-8763-9876611d65ba.png",
+      "6zxl2Yn.jpeg", "704738af04458611487deef6fd54294c.jpg", "706060ca485f7474fdc6befe8879242b_high.webp",
+      "76654577_p0.png", "76918198_p0.png", "77447561_p0.png", "7ead685f929a15ecd4607febdb203505.jpg",
+      "85543107_p0.jpg", "85765309_p0.jpg", "86221335_p0.jpg", "86612443_p0.jpg", "87004925_p0.jpg",
+      "87229432_p0.jpg", "87492544_p1.png", "87541340_p0.jpg", "87660854_p0.jpg", "87845862_p0.jpg",
+      "88278475_p0.jpg", "88495583_p0.png", "88535509_p0.jpg", "88731889_p0.png", "88813232_p0.png",
+      "88828046_p0.jpg", "89419792_p0.jpg", "89570614_p1.jpg", "89570614_p2.jpg", "89589752_p0.jpg",
+      "89927268_p0.jpg", "8cd18d516f2c3b4fc838c4fcfe7ba9bb.jpg", "90175659_p0.png", "90574125_p0.png",
+      "90575757_p0.png", "91248029_p1.png", "91364618_p0.png", "91775801_p0.jpg", "92089325_p0.jpg",
+      "92417015_p0.jpg", "92485876_p0.png", "92742226_p0.jpg", "92817298_p0.png", "92817571_p0.jpg",
+      "92899238_p0.png", "92943138_p0.jpg", "93016418_p0.png", "93113003_p0.jpg", "93113675_p0.jpg",
+      "93187948_p0.png", "93193094_p0.jpg", "93193094_p1.jpg", "93230200_p0.png", "93250799_p0.jpg",
+      "93302401_p0.jpg", "93640549_p0.jpg", "93941263_p0.png", "93980112_p0.png", "94019518_p0.jpg",
+      "94263631_p0.jpg", "94392721_p0.jpg", "94393341_p1.png", "94408869_p0.jpg", "94507712_p0.jpg",
+      "94570607_p0.jpg", "94654869_p0.jpg", "94823287_p0.jpg", "95071288_p0.jpg", "95437281_p0.jpg",
+      "95527533_p0.jpg", "95605647_p0.jpg", "95605647_p1.jpg", "95680122_p0.jpg", "95680161_p0.jpg",
+      "95792237_p0.png", "95812908_p0.jpg", "95838766_p0.jpg", "95855529_p0.jpg", "96102269_p0.png",
+      "96154934_p0.jpg", "96211268_p0.jpg", "96226913_p0.png", "96261823_p0.jpg", "96308045_p0.jpg",
+      "96329307_p0.jpg", "96477280_p0.jpg", "96496707_p0.jpg", "96497740_p0.jpg", "96519673_p0.jpg",
+      "96542642_p0.jpg", "96546842_p0.jpg", "96661519_p2.jpg", "96661519_p8.jpg", "96661519_p9.jpg",
+      "96667560_p0.jpg", "96680243_p0.jpg", "96707717_p0.jpg", "96821803_p0.png", "96830181_p0.jpg",
+      "96839227_p0.jpg", "96866905_p0.jpg", "96876750_p0.jpg", "96903832_p0.jpg", "97006501_p0.png",
+      "97052145_p0.png", "97055055_p0.jpg", "97086274_p0.jpg", "97114296_p0.png", "97199394_p0.jpg",
+      "97234445_p0.jpg", "97268145_p0.jpg", "97455237_p0.jpg", "97455326_p0.jpg", "97476318_p0.jpg",
+      "97537217_p0.jpg", "97624076_p0.jpg", "97664396_p0.jpg", "97785751_p0.jpg", "97806730_p0.png",
+      "97821625_p0.jpg", "97879102_p0.png", "97885034_p0.jpg", "97885034_p3.jpg", "97989312_p0.jpg",
+      "98159183_p0.jpg", "98259221_p0.jpg", "98259473_p0.jpg", "98282542_p0.jpg", "98301393_p0.png",
+      "98309929_p0.jpg", "98412505_p0.jpg", "98559548_p0.jpg", "98603527_p0.jpg", "98726093_p0.jpg",
+      "98765176_p0.png", "98765676_p0.png", "98797564_p0.jpg", "98829902_p0.jpg", "98870307_p0.png",
+      "98951658_p0.jpg", "99276362_p0.jpg", "99371432_p0.jpg", "99495086_p0.jpg", "99497745_p1.jpg",
+      "99565684_p0.jpg", "99614784_p0.jpg", "99645485_p0.jpg", "99667382_p0.png", "99765590_p0.jpg",
+      "99849262_p0.jpg", "99850260_p0.png", "99946064_p0.jpg", "a55fa23b60aff58ec968c4dc38e8865a.jpg",
+      "anime_girl__85_by_djtheng_dic5uzr-fullview.jpg", "Arlecchino.full.4165184.jpg",
+      "Arlecchino.full.4172729.jpg", "art-otokogirai-na-bijin-shimai-wo-namae-mo-tsugezu-ni-v0-qvubn80c4dfa1.webp",
+      "BNQF0AZ.jpg", "cd826fd077f6b68935f72421c7161bb3_3593261416789348207.jpg",
+      "d0f4a8a05f50b3514aad7c789c184587_high.webp", "dhz418x-dabf86f9-2061-47ff-b12d-8b77c4d3335c.png",
+      "download (1).jpeg", "download (2).jpeg", "download (3).jpeg", "download (4).jpeg",
+      "download (5).jpeg", "download (6).jpeg", "download (7).jpeg", "download.jpeg",
+      "E-fY3STVgAAlUCr.jpeg", "f67bbe8c88c50dc5f18cc24c909d45bb.jpg", "Fake Love ft. nyamura - 1280x720.jpg",
+      "FFXG6k8XIAIsDnK.jpeg", "FgtsclsUUAIt9bx.jpg", "FL87rY8VkAIOhZ0.jpeg", "FM-UpfsWUAQ3Jof.jpeg",
+      "FXihJxVUcAApAHa.jpeg", "Gbid-TBawAALt9p.jpeg", "Genshin-Impact-Xiao-Wallpaper-2.jpg",
+      "GKcnRsEXQAAXtVh.jpg", "GMfNlA2a8AAilkp.jpg", "GOt9XEdbcAAe0yE.jpg", "GOxR4RraMAEo5vP.png",
+      "Gr1ju6LXEAE6T-a.jpeg", "Gr1ju6WXoAAAH_8.jpeg", "GsGzD1gbEAA-9dy.jpeg", "GshRPXuaYAADUjE.jpeg",
+      "GsK4u5AaUAE_zVQ.jpeg", "GsoSr4iasAA1Luh.jpeg", "GuJTHbyW8AAvZWm.jpeg",
+      "illust_117729636_20240411_025239.png", "illust_118128892_20240424_211145.jpg", "images_7.jpg",
+      "IMG_20220502_012906.jpg", "IMG_20220911_155047.jpg", "IMG_20220915_170828.jpg", "IMG_20221110_202024.jpg",
+      "IMG-20220608-WA0524.jpg", "IMG-20230930-WA0023.jpg", "IMG-20230930-WA0030.jpg",
+      "IMG-20231001-WA0010.jpg", "IMG-20231001-WA0072.jpg", "IMG-20231005-WA0053.jpg",
+      "IMG-20231006-WA0058.jpg", "IMG-20231009-WA0011.jpg", "IMG-20231009-WA0015.jpg",
+      "IMG-20231010-WA0022.jpg", "IMG-20231017-WA0087.jpg", "IMG-20231017-WA0088.jpg",
+      "IMG-20231102-WA0007.jpg", "IMG-20231102-WA0015.jpg", "IMG-20231102-WA0017.jpg",
+      "IMG-20231104-WA0046.jpg", "IMG-20231114-WA0001.jpg", "IMG-20231114-WA0002.jpg",
+      "IMG-20231114-WA0003.jpg", "IMG-20231127-WA0007.jpg", "IMG-20231128-WA0064.jpg",
+      "IMG-20231128-WA0065.jpg", "IMG-20231129-WA0002.jpg", "IMG-20231130-WA0051.jpg",
+      "IMG-20231208-WA0007.jpg", "IMG-20231208-WA0009.jpg", "IMG-20231208-WA0011.jpg",
+      "IMG-20231208-WA0012.jpg", "IMG-20231208-WA0014.jpg", "IMG-20231208-WA0015.jpg",
+      "IMG-20231208-WA0016.jpg", "IMG-20231211-WA0113.jpg", "IMG-20231211-WA0115.jpg",
+      "IMG-20231211-WA0120.jpg", "IMG-20231216-WA0026.jpg", "IMG-20231216-WA0027.jpg",
+      "IMG-20231216-WA0029.jpg", "IMG-20231216-WA0031.jpg", "IMG-20231216-WA0032.jpg",
+      "IMG-20231219-WA0034.jpg", "IMG-20231224-WA0034.jpg", "IMG-20240106-WA0112.jpg",
+      "IMG-20240106-WA0117.jpg", "IMG-20240106-WA0119.jpg", "IMG-20240112-WA0001.jpg",
+      "IMG-20240113-WA0027.jpg", "IMG-20240113-WA0030.jpg", "IMG-20240114-WA0042.jpg",
+      "IMG-20240114-WA0045.jpg", "IMG-20240114-WA0046.jpg", "IMG-20240114-WA0047.jpg",
+      "IMG-20240114-WA0048.jpg", "IMG-20240115-WA0002.jpg", "IMG-20240115-WA0030.jpg",
+      "IMG-20240119-WA0018.jpg", "IMG-20240121-WA0021.jpg", "IMG-20240125-WA0024.jpg",
+      "IMG-20240222-WA0029.jpg", "IMG-20240223-WA0029.jpg", "IMG-20240308-WA0024.jpg",
+      "IMG-20240422-WA0020.jpg", "IMG-20240611-WA0003.jpg", "IMG-20240614-WA0001.jpg",
+      "IMG-20240625-WA0072.jpg", "navia_genshin_impact_drawn_by_da_mao_banlangen__1ef04d14dde5df6444e6e1979ffad8e3.jpg",
+      "Rainy Day 🌧️ Sword 🗡️ Chinese Animation princess story.jpeg", "Rv slime.jpeg",
+      "sample_6a337b70b38f66f61b555426a1f192b8.jpg", "sample_992d504e0f3fc816db58a47f24fc0c72.jpg",
+      "sample_9fdf46e0121c17e0c35c4f3230d17f93.jpg", "sample_b1272edda2227a4637069775eac9d8be.jpg",
+      "skrik.png", "theme_ntp_background.png", "Untitled111.png", "Untitled221.png",
+      "Untitled22113.png", "Untitled22122.png", "Untitled221w.png",
+      "𝘞𝘢𝘭𝘭𝘱𝘢𝘱𝘦𝘳 𝘢𝘯𝘪𝘮𝘦 𝘢𝘳𝘵 𝓐𝓲 🍒⃞✦◌˙•ꔛ.jpeg",
+      "WhatsApp Image 2023-09-11 at 21.54.31.jpg", "WhatsApp Image 2023-09-13 at 17.08.35.jpg",
+      "WhatsApp Image 2023-09-13 at 19.09.26.jpg", "WhatsApp Image 2023-09-15 at 06.48.34.jpg",
+      "WhatsApp Image 2023-09-17 at 13.08.15.jpg", "WhatsApp Image 2023-09-17 at 13.08.28.jpg",
+      "WhatsApp Image 2023-09-17 at 13.14.29.jpg", "WhatsApp Image 2023-09-17 at 13.16.24.jpg",
+      "WhatsApp Image 2023-09-17 at 13.16.40.jpg", "WhatsApp Image 2023-09-17 at 13.20.53.jpg",
+      "WhatsApp Image 2023-09-21 at 12.46.48.jpg", "WhatsApp Image 2023-09-22 at 08.44.47.jpg",
+      "WhatsApp Image 2023-09-23 at 07.48.23.jpg", "WhatsApp Image 2023-09-23 at 07.48.2322.jpg",
+      "WhatsApp Image 2023-09-23 at 07.48.232333.jpg", "WhatsApp Image 2023-09-23 at 07.48.2s332.jpg",
+      "WhatsApp Image 2023-09-23 at 07.49.31.jpg", "ZX5W6OyDYm4hD2oOYf3Yuoy82QgWj3.webp"
+    ];
+
+    // Fungsi untuk menentukan kategori berdasarkan nama file
+    function getCategory(filename) {
+      const lower = filename.toLowerCase();
+      
+      // Genshin Impact keywords
+      const genshinKeywords = ['genshin', 'raiden', 'shogun', 'xiao', 'arlecchino', 'navia', 'yae', 'miko', 
+        'zhongli', 'hutao', 'ganyu', 'ayaka', 'kazuha', 'nahida', 'furina', 'neuvillette', 'wanderer',
+        'yelan', 'shenhe', 'kokomi', 'eula', 'keqing', 'diluc', 'klee', 'venti', 'albedo', 'tartaglia',
+        'childe', 'ningguang', 'beidou', 'fischl', 'mona', 'qiqi', 'jean', 'barbara', 'amber', 'lisa',
+        'kaeya', 'razor', 'bennett', 'xingqiu', 'xiangling', 'sucrose', 'chongyun', 'noelle', 'diona',
+        'xinyan', 'rosaria', 'yanfei', 'sayu', 'thoma', 'gorou', 'yunjin', 'shinobu', 'heizou', 'tighnari',
+        'collei', 'dori', 'candace', 'cyno', 'nilou', 'layla', 'faruzan', 'alhaitham', 'dehya', 'mika',
+        'baizhu', 'kaveh', 'kirara', 'lynette', 'lyney', 'freminet', 'wriothesley', 'charlotte', 'navia',
+        'chevreuse', 'gaming', 'xianyun', 'chiori', 'arlecchino', 'sethos', 'clorinde', 'sigewinne',
+        'emilie', 'kachina', 'kinich', 'mualani', 'xilonen', 'ororon', 'chasca', 'mavuika'];
+      
+      // Honkai Star Rail keywords
+      const hsrKeywords = ['honkai', 'star rail', 'starrail', 'hsr', 'kafka', 'seele', 'bronya', 'himeko',
+        'welt', 'clara', 'jing yuan', 'luocha', 'silver wolf', 'blade', 'dan heng', 'march 7th', 'stelle',
+        'caelus', 'trailblazer', 'gepard', 'pela', 'serval', 'natasha', 'sampo', 'hook', 'arlan', 'asta',
+        'herta', 'qingque', 'tingyun', 'sushang', 'yukong', 'bailu', 'yanqing', 'fu xuan', 'lynx', 'luka',
+        'guinaifen', 'topaz', 'huohuo', 'argenti', 'hanya', 'ruan mei', 'xueyi', 'dr ratio', 'black swan',
+        'sparkle', 'misha', 'acheron', 'aventurine', 'gallagher', 'robin', 'boothill', 'firefly', 'jade',
+        'jiaoqiu', 'yunli', 'march 7', 'feixiao', 'lingsha', 'moze', 'rappa', 'sunday', 'fugue', 'the herta',
+        'aglaea', 'tribbie', 'mydei', 'castorice', 'anaxa', 'hyacine'];
+      
+      // Anime keywords
+      const animeKeywords = ['anime', 'manga', 'waifu', 'slime', 'isekai', 'naruto', 'one piece', 'demon slayer',
+        'attack on titan', 'jujutsu', 'spy x family', 'chainsaw', 'bocchi', 'oshi no ko', 'frieren',
+        'download', 'sample_', 'anime_girl'];
+      
+      // Check Genshin
+      for (const kw of genshinKeywords) {
+        if (lower.includes(kw)) return 'genshin';
+      }
+      
+      // Check HSR
+      for (const kw of hsrKeywords) {
+        if (lower.includes(kw)) return 'hsr';
+      }
+      
+      // Check Anime
+      for (const kw of animeKeywords) {
+        if (lower.includes(kw)) return 'anime';
+      }
+      
+      // Pixiv-style numbered files (likely Genshin fanart based on the collection)
+      if (/^\d{8,}_p\d+\.(jpg|png|jpeg)$/i.test(filename)) {
+        return 'genshin';
+      }
+      
+      // Screenshots and WhatsApp images
+      if (lower.includes('img_') || lower.includes('img-') || lower.includes('whatsapp')) {
+        return 'other';
+      }
+      
+      return 'other';
+    }
+
+    const galleryGrid = document.getElementById('galleryGrid');
+    let allItems = [];
+    
+    // Generate gallery items
+    allImages.forEach((filename, index) => {
+      const cat = getCategory(filename);
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.dataset.category = cat;
+      const imgSrc = '../assets/galery/' + encodeURIComponent(filename);
+      
+      const imgElement = document.createElement('img');
+      imgElement.src = imgSrc;
+      imgElement.loading = 'lazy';
+      imgElement.alt = 'Gallery Image';
+      imgElement.onclick = function() { 
+        updateVisibleImages();
+        const visibleIndex = visibleImages.indexOf(imgSrc);
+        openLightbox(imgSrc, visibleIndex >= 0 ? visibleIndex : 0); 
+      };
+      
+      imgElement.onload = function() { item.classList.add('loaded'); };
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'gallery-overlay';
+      
+      item.appendChild(imgElement);
+      item.appendChild(overlay);
+      galleryGrid.appendChild(item);
+      allItems.push({element: item, src: imgSrc, cat: cat});
+    });
+    
+    function updateVisibleImages() {
+      visibleImages = allItems.filter(item => !item.element.classList.contains('hidden')).map(item => item.src);
+    }
+    
+    // Filter functionality
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.dataset.filter;
+        allItems.forEach(item => {
+          if (filter === 'all' || item.cat === filter) {
+            item.element.classList.remove('hidden');
+          } else {
+            item.element.classList.add('hidden');
+          }
+        });
+        updateVisibleImages();
+      });
+    });
+    
+    updateVisibleImages();
+
+    // Hero Slideshow - hanya gambar landscape
+    const landscapeImages = [];
+    const heroSlideshow = document.getElementById('heroSlideshow');
+    const heroSlideshowNext = document.getElementById('heroSlideshowNext');
+    let currentSlide = 0;
+    let slideshowReady = false;
+    
+    allImages.forEach(filename => {
+      const img = new Image();
+      img.src = '../assets/galery/' + encodeURIComponent(filename);
+      img.onload = function() {
+        if (this.width > this.height) {
+          landscapeImages.push(img.src);
+          if (!slideshowReady && landscapeImages.length >= 2) {
+            slideshowReady = true;
+            startSlideshow();
+          }
+        }
+      };
+    });
+    
+    function startSlideshow() {
+      if (landscapeImages.length === 0) return;
+      
+      for (let i = landscapeImages.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [landscapeImages[i], landscapeImages[j]] = [landscapeImages[j], landscapeImages[i]];
+      }
+      
+      heroSlideshow.style.backgroundImage = 'url("' + landscapeImages[0] + '")';
+      
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % landscapeImages.length;
+        heroSlideshowNext.style.backgroundImage = 'url("' + landscapeImages[currentSlide] + '")';
+        
+        heroSlideshow.classList.add('fade-out');
+        heroSlideshowNext.classList.add('fade-in');
+        
+        setTimeout(() => {
+          heroSlideshow.style.backgroundImage = 'url("' + landscapeImages[currentSlide] + '")';
+          heroSlideshow.classList.remove('fade-out');
+          heroSlideshowNext.classList.remove('fade-in');
+        }, 1500);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
