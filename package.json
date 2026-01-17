@@ -1,0 +1,23 @@
+{
+  "name": "list_joki-main",
+  "version": "1.0.0",
+  "main": "update_gallery.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tomi-012/List_Joki.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tomi-012/List_Joki/issues"
+  },
+  "homepage": "https://github.com/Tomi-012/List_Joki#readme",
+  "description": "",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
+}
