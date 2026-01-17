@@ -552,4 +552,16 @@ footer {
         padding: 20px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     }
+
+    /* Special Package Card Responsive */
+    .package-card[style*="grid-column"] > div {
+        flex-direction: column !important;
+        text-align: center;
+    }
+
+    .package-card[style*="grid-column"] img {
+        width: 100% !important;
+        max-width: 350px;
+        margin: 0 auto;
+    }
 }
